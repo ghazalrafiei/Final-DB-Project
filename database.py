@@ -89,15 +89,14 @@ class DataBase:
 
     def delete(self, table, column, key):  # DONE
         # use column instead of id for all. because you might want to delete
-        # all records
+        # all records which have the same feature
 
-        query = f'DELETE FROM {table} WHERE {column} = {quote(key)};'
+        query = f'DELETE FROM {table} WHERE {column} = {quote(key)}'
         self.exectue_query(query)
 
-    # def update(self,table):
-    #     set = ''
-    #     query = f'UPDATE {table} SET {} = {} WHERE {} = {};'
-    #     self.exectue_query(query)
+    def update(self, table, column, new_value, key_column, value_column):
+        query = f'UPDATE {table} SET {column} = {quote(new_value)} WHERE {key_column} = {quote(value_column)}'
+        self.exectue_query(query)
 
     def get(self, table):
 

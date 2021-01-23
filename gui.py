@@ -4,7 +4,10 @@ import database as db
 import yaml
 
 from utils import *
-from PyQt5.QtWidgets import QApplication,QDialog, QLabel, QWidget, QTabWidget, QGridLayout, QHBoxLayout, QPushButton, QDialogButtonBox, QLineEdit, QVBoxLayout, QFormLayout, QToolBar, QStatusBar
+from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QWidget, QTabWidget, QGridLayout, QHBoxLayout, QPushButton, QDialogButtonBox, QLineEdit, QVBoxLayout, QFormLayout, QToolBar, QStatusBar
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QAction, QTableWidget, QTableWidgetItem, QVBoxLayout
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
 
 
 class Dialog(QDialog):
@@ -28,11 +31,7 @@ class Dialog(QDialog):
         self.setLayout(dlgLayout)
 
 
-
-
-
 # QlineEdit for text box
-
 settings = config(file='config.yml')
 settings.import_settings()
 
@@ -57,6 +56,8 @@ layout = QGridLayout()
 tabwidget = QTabWidget()
 
 for t in AirlineTicketSelling_db.schemas.keys():
+    table = AirlineTicketSelling_db.get(t)
+    print(table)
     label = QLabel(f'label_{t}')
     tabwidget.addTab(label, t)
 layout.addWidget(tabwidget, 0, 0)
@@ -64,6 +65,8 @@ layout.addWidget(tabwidget, 0, 0)
 layout.addWidget(QPushButton('Insert'))
 layout.addWidget(QPushButton('Update'))
 layout.addWidget(QPushButton('Delete'))
+layout.addWidget(QPushButton('Optional SQL Query'))
+
 
 window.setLayout(layout)
 window.show()
