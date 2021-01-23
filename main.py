@@ -1,20 +1,28 @@
 import object as ob
 import database as db
-# import psycopg2 as psg
+import yaml
+
+from utils import *
+from PyQt5.QtWidgets import *
+import sys
 
 
 if __name__ == '__main__':
 
-    database_name = 'TicketBooking'
-    user = 'postgres'
-    password = 'Iran1234'
-    host = 'localhost'
-    port = 5432
+    # should they be out of main?!
 
-    AirlineTicketSelling_db = db.DataBase(database_name, user , password, host, port)
-    AirlineTicketSelling_db.connect()
-    t = ob.TravelAgency('testName1','testAddr1','0912')
+    # print(AirlineTicketSelling_db.get('Customer'))
 
-    AirlineTicketSelling_db.insert(t)
+    print(f'\x1b[0;37;40m' + '\nWindow Openned.')
 
-    
+    app = QApplication(sys.argv)
+    screen = Window()
+    screen.setFixedWidth(1000)
+    screen.setFixedHeight(600)
+    screen.show()
+    sys.exit(app.exec_())
+
+    # t = ob.TravelAgency('testName201', 'testAddr1120', '23456789087')
+    # AirlineTicketSelling_db.insert(t)
+    # g = AirlineTicketSelling_db.get('travelagency')
+    print('end')

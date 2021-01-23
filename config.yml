@@ -1,0 +1,55 @@
+appName: Online Airline Ticket Booking Service
+author: Ghazal Rafiei
+studentNumber: 97222044
+
+database:
+  
+  database_name: TicketBooking
+
+  port: 5432
+
+  user: postgres
+
+  password: Iran1234
+
+  host: localhost
+
+  schemas:
+
+    Customer:
+      columns:
+      - firstname
+      - surname
+      - username
+
+    HostWebsite:
+      columns:
+      - website_address
+
+    TravelAgency:
+      columns:
+      - name
+      - address
+      - phone_number
+    
+    TicketCollects:
+      columns:
+      - flight_time
+      - destination
+      - source
+      - ticket_id
+      - price
+      - tclass
+      - airline
+      - website
+      - address
+      - travel_agency_name
+
+    TransactionBuy:
+      columns:
+      - price_transaction_datetime
+      - transaction_id
+      - payment_service_provider
+      - username
+      - ticket_id
+      - website_address

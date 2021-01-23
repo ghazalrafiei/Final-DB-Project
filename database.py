@@ -1,38 +1,67 @@
 from sys import stderr
+from utils import *
 import psycopg2
 
+
 class DataBase:
-    def __init__(self,dbName,user,password,host,port):
+    def __init__(self, dbName, user, password, host, port, schemas):
 
         self.dbName = dbName
         self.user = user
         self.password = password
         self.host = host
         self.port = port
-        self.conn = ''
-        self.schemas = {'Customer','HostWebsite','TravelAgency','TicketCollects','TransactionBuy'}
+        self.schemas = schemas
 
-    def exectue_query(self,query):
+        self.conn = None
+        self.cursor = None
 
-        self.cursor.execute(query)
-        self.conn.commit()
-        self.conn.close()
-        return 'no error still'
+    def exectue_query(self, query):
 
-    def connect(self): #DONE
-        self.conn = conn = psycopg2.connect(database=self.dbName, user = self.user , password = self.password, host = self.host, port = self.port)
+        result = None
+        try:
+            self.cursor.execute(query)
+
+            if query.startswith('SELECT'):
+                result = self.cursor.fetchall()
+
+        except Exception as err:
+            # if err is not None:
+            # self.conn.rollback()
+            stderr.write(
+                f'{bcolors.OKBLUE}An error from PostgreSQL is raised: ' +
+                str(err))
+            return
+
+        finally:
+            # print('yay')
+
+            self.conn.commit()
+            # self.conn.close()
+
+        return result
+
+    def connect(self):  # DONE
+
+        self.conn = conn = psycopg2.connect(
+            database=self.dbName,
+            user=self.user,
+            password=self.password,
+            host=self.host,
+            port=self.port)
         self.cursor = conn.cursor()
-        # return conn
 
-    def insert(self,obj): #DONE
-        #If NULL Then Insert NULL
-        #if another class will be add, it works!!!
+    def insert(self, obj):  # DONE
+
+        # If NULL Then Insert NULL
+        # if another class will be added, it works!!!
         attributes = ''
-        values = '' #String Completed be parsed
+        values = ''
 
         items = obj.__dict__.items()
+        class_name = obj.__class__.__name__
 
-        is_first = True #for first ','
+        is_first = True  # for first ','
         for i in items:
 
             if is_first:
@@ -40,31 +69,38 @@ class DataBase:
 
                 if i[1] is None:
                     i[1] = 'NULL'
-                values = values+ '\'' + str(i[1]) + '\''
+                values = values + quote(str(i[1]))
                 is_first = False
-                continue  
+                continue
 
-            attributes = attributes+' , '+ i[0]
+            attributes = attributes + ' , ' + i[0]
             val = i[1]
             if i[1] is None:
                 i[1] = 'NULL'
-            val = '\'' + str(i[1]) + '\''
-            values = values +' , '+ val
-        
-        
+            val = quote(str(i[1]))
+            values = values + ' , ' + val
 
-
-        if obj.__class__.__name__ in self.schemas:
-            insert_query = f'INSERT INTO {obj.__class__.__name__}({attributes}) VALUES({values});'
+        if class_name in self.schemas:
+            insert_query = f'INSERT INTO {class_name}({attributes}) VALUES({values})'
             self.exectue_query(insert_query)
 
-        else:
-            raise Exception('Table does not exist.')
+        else:  # GIVE IT TO THE SQL WHEN CORRECTING TRY CATCH
+            print('Table does not exist.')
 
+    def delete(self, table, column, key):  # DONE
+        # use column instead of id for all. because you might want to delete
+        # all records
 
-    # def delete():
-    #     cursor.execute('SQL')
-    # def update():
-    #     cursor.execute('SQL')
-    # def get():
-    #     cursor.execute('SQL')
+        query = f'DELETE FROM {table} WHERE {column} = {quote(key)};'
+        self.exectue_query(query)
+
+    # def update(self,table):
+    #     set = ''
+    #     query = f'UPDATE {table} SET {} = {} WHERE {} = {};'
+    #     self.exectue_query(query)
+
+    def get(self, table):
+
+        select_query = f'SELECT * FROM {table}'
+        result = self.exectue_query(select_query)
+        return result
