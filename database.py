@@ -41,7 +41,7 @@ class DataBase:
 
         return result
 
-    def connect(self):  # DONE
+    def connect(self):
 
         self.conn = conn = psycopg2.connect(
             database=self.dbName,
@@ -51,10 +51,9 @@ class DataBase:
             port=self.port)
         self.cursor = conn.cursor()
 
-    def insert(self, obj):  # DONE
+    def insert(self, obj):
 
-        # If NULL Then Insert NULL
-        # if another class will be added, it works!!!
+        
         attributes = ''
         values = ''
 
@@ -67,6 +66,7 @@ class DataBase:
             if is_first:
                 attributes = attributes + i[0]
 
+        # If is None, then insert NULL
                 if i[1] is None:
                     i[1] = 'NULL'
                 values = values + quote(str(i[1]))
@@ -80,12 +80,9 @@ class DataBase:
             val = quote(str(i[1]))
             values = values + ' , ' + val
 
-        if class_name in self.schemas:
-            insert_query = f'INSERT INTO {class_name}({attributes}) VALUES({values})'
-            self.exectue_query(insert_query)
-
-        else:  # GIVE IT TO THE SQL WHEN CORRECTING TRY CATCH
-            print('Table does not exist.')
+        
+        insert_query = f'INSERT INTO {class_name}({attributes}) VALUES({values})'
+        self.exectue_query(insert_query)
 
     def delete(self, table, column, key):  # DONE
         # use column instead of id for all. because you might want to delete

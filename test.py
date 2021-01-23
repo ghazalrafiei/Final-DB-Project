@@ -62,9 +62,24 @@ test_db.insert(ob.HostWebsite('www.web3.com'))
 test_db.insert(ob.HostWebsite('www.web1.com'))  # Error
 print('__________________________________UPDATE_________________________')
 
-test_db.update('Hostwebsite','website_address','www.NewWeb.com','website_address','www.web1.com')
-test_db.update('Hostwebsie','website_address','www.NewWeb.com','website_address','www.web1.com')#Error
-test_db.update('Hostwebsite','website_address','www.NewWeb.com','website_address','www.web8.com')#Error
+test_db.update(
+    'Hostwebsite',
+    'website_address',
+    'www.NewWeb.com',
+    'website_address',
+    'www.web1.com')
+test_db.update(
+    'Hostwebsie',
+    'website_address',
+    'www.NewWeb.com',
+    'website_address',
+    'www.web1.com')  # Error
+test_db.update(
+    'Hostwebsite',
+    'website_address',
+    'www.NewWeb.com',
+    'website_address',
+    'www.web8.com')  # Error
 
 
 print('______________________________GET_____________________________')
