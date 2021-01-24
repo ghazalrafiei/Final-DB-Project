@@ -4,6 +4,7 @@ import yaml
 def quote(string):
     return '\'' + str(string) + '\''
 
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -35,3 +36,6 @@ class config:
         self.schemas = cfg['database']['schemas']
 
 
+settings = config(file='config.yml')
+settings.import_settings()
+print(settings.schemas['Customer'])

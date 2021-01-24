@@ -10,7 +10,6 @@ import sys
 if __name__ == '__main__':
 
     # should they be out of main?!
-    
 
     # print(AirlineTicketSelling_db.get('Customer'))
 

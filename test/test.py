@@ -1,7 +1,10 @@
+print('__file__={0:<35} | __name__={1:<25} | __package__={2:<25}'.format(__file__,__name__,str(__package__)))
+
+from .. import utils
+# from .. import tables.Customer
 import database as db
-import object as ob
 import time
-from utils import *
+# import database
 import yaml
 
 ts_settings = config(file='config.yml')
@@ -17,9 +20,9 @@ test_db = db.DataBase(
 test_db.connect()
 
 print('____________________________INSERT_______________________________')
-test_db.insert(ob.Customer('test1', 'test1', 'test1', 22, 22, ''))
-test_db.insert(ob.Customer('test1', 'test1', 'test1', 22, 23, 'pass'))  # Error
-test_db.insert(ob.Customer('test1', 'test2', 'test2', 24, 25, 'pass'))  # Error
+test_db.insert(Customer('test1', 'test1', 'test1', 22, 22, ''))
+test_db.insert(Customer('test1', 'test1', 'test1', 22, 23, 'pass'))  # Error
+test_db.insert(Customer('test1', 'test2', 'test2', 24, 25, 'pass'))  # Error
 test_db.insert(ob.TravelAgency('test1', 'street1', '0912'))
 test_db.insert(ob.TravelAgency('test1', 'street2', '0914'))  # Error
 

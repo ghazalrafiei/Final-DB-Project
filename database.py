@@ -53,7 +53,6 @@ class DataBase:
 
     def insert(self, obj):
 
-        
         attributes = ''
         values = ''
 
@@ -80,7 +79,6 @@ class DataBase:
             val = quote(str(i[1]))
             values = values + ' , ' + val
 
-        
         insert_query = f'INSERT INTO {class_name}({attributes}) VALUES({values})'
         self.exectue_query(insert_query)
 

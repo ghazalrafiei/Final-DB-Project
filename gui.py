@@ -1,11 +1,11 @@
 import sys
-import object as ob
+# from tables import *
 import database as db
 import yaml
 
 from utils import *
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QWidget, QTabWidget, QGridLayout, QHBoxLayout, QPushButton, QDialogButtonBox, QLineEdit, QVBoxLayout, QFormLayout, QToolBar, QStatusBar
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QAction, QTableWidget, QTableWidgetItem, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget, QAction, QTableWidget, QTableWidgetItem, QVBoxLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
@@ -44,8 +44,6 @@ AirlineTicketSelling_db = db.DataBase(
     settings.schemas)
 AirlineTicketSelling_db.connect()
 
-# print(AirlineTicketSelling_db.schemas.keys())
-
 app = QApplication(sys.argv)
 window = QWidget()
 window.setWindowTitle('Airline Ticket Booking Database')
@@ -53,19 +51,42 @@ window.setFixedWidth(1200)
 window.setFixedHeight(800)
 
 layout = QGridLayout()
-tabwidget = QTabWidget()
+tabs = QTabWidget()
 
-for t in AirlineTicketSelling_db.schemas.keys():
+for t in settings.schemas.keys():
+
     table = AirlineTicketSelling_db.get(t)
     print(table)
-    label = QLabel(f'label_{t}')
-    tabwidget.addTab(label, t)
-layout.addWidget(tabwidget, 0, 0)
+    rows = table
+    cols = AirlineTicketSelling_db.schemas[t]['columns']
+    current_tab = QWidget()
 
-layout.addWidget(QPushButton('Insert'))
-layout.addWidget(QPushButton('Update'))
-layout.addWidget(QPushButton('Delete'))
-layout.addWidget(QPushButton('Optional SQL Query'))
+    tabs.addTab(current_tab, t)
+    current_tab.layout = QVBoxLayout()
+
+    table_view = QTableWidget()
+    table_view.setFixedSize(400,400)
+    table_view.setRowCount(len(rows))
+    table_view.setColumnCount(len(cols))
+    #Set Columns Names:
+    for c in range(len(cols)):
+        table_view.setItem(0,c , QTableWidgetItem(cols[c]))
+    #Set Items
+    for r in range(len(rows)):
+        for c in range(len(cols)):
+            table_view.setItem(r+1, c , QTableWidgetItem(str(table[r][c-1])))
+    
+
+    current_tab.layout.addWidget(table_view)
+    current_tab.layout.addWidget(QPushButton('Insert'))
+    current_tab.layout.addWidget(QPushButton('Update'))
+    current_tab.layout.addWidget(QPushButton('Delete'))
+    current_tab.layout.addWidget(QPushButton('Optional SQL Query'))
+
+    current_tab.setLayout(current_tab.layout)
+
+
+layout.addWidget(tabs, 0, 0)
 
 
 window.setLayout(layout)
