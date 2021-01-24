@@ -19,4 +19,3 @@ class TicketCollects:
         self.airline = airline
         self.website_address = website_address
         self.travel_agency_name = travel_agency_name
-

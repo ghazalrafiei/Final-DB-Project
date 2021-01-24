@@ -21,6 +21,9 @@ database:
       - firstname
       - surname
       - username
+      - nationality_number
+      - phone_number
+      - password
 
     HostWebsite:
       columns:
@@ -41,9 +44,8 @@ database:
       - price
       - tclass
       - airline
-      - website
-      - address
-      - travel_agency_name
+      - website address
+      - travel agency name
 
     TransactionBuy:
       columns:
