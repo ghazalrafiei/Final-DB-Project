@@ -1,8 +1,13 @@
 import yaml
+import sys
 
 
-def quote(string):
-    return '\'' + str(string) + '\''
+def quote(string, char='\''):
+    return char + str(string) + char
+
+
+def str_to_class(s):
+    return getattr(sys.modules['object.object'], s)
 
 
 class bcolors:
@@ -34,8 +39,3 @@ class config:
         self.host = cfg['database']['host']
         self.port = cfg['database']['port']
         self.schemas = cfg['database']['schemas']
-
-
-settings = config(file='config.yml')
-settings.import_settings()
-print(settings.schemas['Customer'])

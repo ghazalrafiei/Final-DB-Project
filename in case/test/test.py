@@ -1,11 +1,13 @@
-print('__file__={0:<35} | __name__={1:<25} | __package__={2:<25}'.format(__file__,__name__,str(__package__)))
-
-from .. import utils
+# from .. import utils
 # from .. import tables.Customer
 import database as db
+import objects as ob
 import time
+from utils import *
+import sys
 # import database
 import yaml
+
 
 ts_settings = config(file='config.yml')
 ts_settings.import_settings()

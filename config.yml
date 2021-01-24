@@ -44,12 +44,13 @@ database:
       - price
       - tclass
       - airline
-      - website address
-      - travel agency name
+      - website_address
+      - travel_agency_name
 
     TransactionBuy:
       columns:
-      - price_transaction_datetime
+      - price
+      - transaction_datetime
       - transaction_id
       - payment_service_provider
       - username

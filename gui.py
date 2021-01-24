@@ -1,14 +1,26 @@
 import sys
-# from tables import *
+import object as ob
 import database as db
 import yaml
+import json
+import object.object as ob
 
-from utils import *
+from utils import str_to_class, quote, config
 from PyQt5.QtWidgets import *
-# from PyQt5.QtWidgets import QApplication,QHeaderView QDialog, QLabel, QWidget, QTabWidget, QGridLayout, QHBoxLayout, QPushButton, QDialogButtonBox, QLineEdit, QVBoxLayout, QFormLayout, QToolBar, QStatusBar
-# from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget, QAction, QTableWidget, QTableWidgetItem, QVBoxLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import *
+
+settings = config(file='config.yml')
+settings.import_settings()
+
+AirlineTicketSelling_db = db.DataBase(
+    settings.database_name,
+    settings.user,
+    settings.password,
+    settings.host,
+    settings.port,
+    settings.schemas)
+AirlineTicketSelling_db.connect()
 
 
 class Dialog(QDialog):
@@ -16,11 +28,27 @@ class Dialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def add_fields(self, fields, title='خر'):
+    def add_fields(self, fields, title='', query_type='', tab_name=''):
 
+        self.query_type = query_type
+        self.tab_name = tab_name
         self.fields = fields
-        self.setWindowTitle('title')
+        self.title = title
+
+        self.setWindowTitle(title)
         self.dlgLayout = QVBoxLayout()
+
+        if query_type == 'D':
+            self.dlgLayout.addWidget(QLabel('By any column(only one)'))
+        # elif query == 'I':
+
+        #     pass
+        # elif query == 'U':
+
+        #     pass
+        elif query_type == 'O':
+            self.dlgLayout.addWidget(QLabel('Write any query you want!'))
+
         self.formLayout = QFormLayout()
         self.text_boxes = []
         for f in fields:
@@ -46,25 +74,36 @@ class Dialog(QDialog):
         for i in self.text_boxes:
             inputs.append(i.text())
             i.clear()
-            print(inputs)
-            # Call database functions
-            # reload home
+
+        json_string = '{ '
+        for i in range(len(inputs)):
+            json_string += quote(settings.schemas[t]['columns'][i],
+                                 char='\"') + ' : ' + quote(inputs[i], char='\"') + ' , '
+        json_string = json_string[:len(json_string) - 2]
+        json_string += ' }'
+
+        print(json_string)
+        obj_json = json.loads(json_string)
+        obj = str_to_class(t)(**obj_json)
+
+        if self.query_type == 'D':
+            AirlineTicketSelling_db.delete(obj)
+            pass
+
+        elif self.query_type == 'I':
+            AirlineTicketSelling_db.insert(obj)
+            pass
+
+        elif self.query_type == 'U':
+            AirlineTicketSelling_db.update(obj)
+            pass
+
+        elif self.query_type == 'O':
+            AirlineTicketSelling_db.exectue_query(inputs[0])
+            pass
+
         self.close()
 
-
-# MAIN:
-# QlineEdit for text box
-settings = config(file='config.yml')
-settings.import_settings()
-
-AirlineTicketSelling_db = db.DataBase(
-    settings.database_name,
-    settings.user,
-    settings.password,
-    settings.host,
-    settings.port,
-    settings.schemas)
-AirlineTicketSelling_db.connect()
 
 app = QApplication(sys.argv)
 window = QWidget()
@@ -74,10 +113,6 @@ window.setFixedHeight(800)
 
 layout = QGridLayout()
 tabs = QTabWidget()
-
-
-def print_zert():
-    print('zer')
 
 
 for t in settings.schemas.keys():
@@ -95,32 +130,42 @@ for t in settings.schemas.keys():
     table_view.setColumnCount(len(cols))
     table_view.horizontalHeader().setStretchLastSection(True)
     table_view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
     # Set Columns Names:
-    for c in range(len(cols)):
-        table_view.setItem(0, c, QTableWidgetItem(cols[c]))
     table_view.setHorizontalHeaderLabels(cols)
 
     # Set Items
     for r in range(len(rows)):
         for c in range(len(cols)):
+            value = str(rows[r][c])
+            if cols[c] == 'password':
+                value = '*' * 10
+            content = QTableWidgetItem(value)
 
-            content = QTableWidgetItem(str(rows[r][c]))
             content.setFlags(content.flags() ^ Qt.ItemIsEditable)
             table_view.setItem(r, c, content)
 
     current_tab.layout.addWidget(table_view)
 
-    a = Dialog()
-    a.add_fields(['a'])
-
+    insert_dialog = Dialog()
+    insert_dialog.add_fields(cols, 'I', t)
     insert_button = QPushButton('Insert')
-    insert_button.clicked.connect(a.show)
+    insert_button.clicked.connect(insert_dialog.show)
+
+    delete_dialog = Dialog()
+    delete_dialog.add_fields(cols, 'D', t)
     delete_button = QPushButton('Delete')
-    delete_button.clicked.connect(a.show)
+    delete_button.clicked.connect(delete_dialog.show)
+
+    update_dialog = Dialog()
+    update_dialog.add_fields(cols, 'U', t)
     update_button = QPushButton('Update')
-    update_button.clicked.connect(a.show)
+    update_button.clicked.connect(update_dialog.show)
+
+    opt_dialog = Dialog()
+    opt_dialog.add_fields([''], 'O', t)
     optional_button = QPushButton('Optional SQL Query')
-    optional_button.clicked.connect(a.show)
+    optional_button.clicked.connect(opt_dialog.show)
 
     current_tab.layout.addWidget(insert_button)
     current_tab.layout.addWidget(delete_button)

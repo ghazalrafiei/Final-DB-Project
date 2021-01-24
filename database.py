@@ -26,18 +26,13 @@ class DataBase:
                 result = self.cursor.fetchall()
 
         except Exception as err:
-            # if err is not None:
-            # self.conn.rollback()
             stderr.write(
                 f'{bcolors.OKBLUE}An error from PostgreSQL is raised: ' +
                 str(err))
             return
 
         finally:
-            # print('yay')
-
             self.conn.commit()
-            # self.conn.close()
 
         return result
 
