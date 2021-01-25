@@ -1,5 +1,5 @@
 from sys import stderr
-from utils import *
+from utils import quote, bcolors
 import psycopg2
 
 
@@ -20,21 +20,21 @@ class DataBase:
 
         result = None
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query.replace('\"','\''))
 
             if query.startswith('SELECT'):
                 result = self.cursor.fetchall()
 
         except Exception as err:
-            stderr.write(
-                f'{bcolors.OKBLUE}An error from PostgreSQL is raised: ' +
-                str(err))
-            return
+            err = 'Error from PostgreSQL: ' + str(err)
+            stderr.write(err)
+            return 1, err
 
         finally:
+            print('log: ', self.cursor.statusmessage)
             self.conn.commit()
 
-        return result
+        return 0, result
 
     def connect(self):
 
@@ -75,21 +75,35 @@ class DataBase:
             values = values + ' , ' + val
 
         insert_query = f'INSERT INTO {class_name}({attributes}) VALUES({values})'
-        self.exectue_query(insert_query)
+        err, result = self.exectue_query(insert_query)
+        if err:
+            return result
+        return None
 
     def delete(self, table, column, key):  # DONE
         # use column instead of id for all. because you might want to delete
         # all records which have the same feature
 
         query = f'DELETE FROM {table} WHERE {column} = {quote(key)}'
-        self.exectue_query(query)
+        err, result = self.exectue_query(query)
+        if err:
+            return result
+        return None
 
     def update(self, table, column, new_value, key_column, value_column):
         query = f'UPDATE {table} SET {column} = {quote(new_value)} WHERE {key_column} = {quote(value_column)}'
-        self.exectue_query(query)
+        err, result = self.exectue_query(query)
+        if err:
+            return result
+        return None
 
     def get(self, table):
 
         select_query = f'SELECT * FROM {table}'
-        result = self.exectue_query(select_query)
+        err, result = self.exectue_query(select_query)
+        # if err:
+        #     return result
+        # return select_query
         return result
+
+

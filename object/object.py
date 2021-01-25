@@ -9,6 +9,7 @@ class Customer:
             password):
         self.firstname = firstname
         self.surname = surname
+        self.username = username
         self.nationality_number = nationality_number
         self.phone_number = phone_number
         self.password = password
