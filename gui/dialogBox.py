@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon, QPalette
 from PyQt5.QtCore import *
 
 import json
-from gui import darkTheme, mainWindow, message
+from gui import darkTheme, mainWindow, messageBox
 import database as dbs
 
 
@@ -120,7 +120,7 @@ class Dialog(QDialog):
         self.close()
         self.mainwindow.CreateTabs(self.db)
         if self.failed:
-            message.show_message(self.message)
+            messageBox.show_message(self.message)
 
     def closeEvent(self, event):
         event.accept()
