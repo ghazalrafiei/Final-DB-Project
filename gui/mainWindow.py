@@ -1,7 +1,7 @@
 import sys
 import yaml
 import json
-import dialogBox
+import gui.dialogBox
 import gui.darkTheme
 import database as db
 
@@ -16,7 +16,7 @@ class GUI(QWidget):
         super().__init__(parent)
         self.setWindowTitle('Airline Ticket Booking Database')
         self.setFixedWidth(1250)
-        self.setFixedHeight(600)
+        self.setFixedHeight(700)
         self.setPalette(gui.darkTheme.dark_palette)
         self.counter = 0
 
@@ -33,8 +33,6 @@ class GUI(QWidget):
             QWidget().setLayout(self.layout())
 
         self.tabs = QTabWidget()
-        print(tab_index, '*')
-
         self.laylay = QGridLayout()
 
         self.database = database
@@ -55,7 +53,8 @@ class GUI(QWidget):
             current_tab.layout = QVBoxLayout()
 
             table_view = QTableWidget()
-            table_view.setFixedSize(1200, 400)
+
+            table_view.setFixedSize(1200, 500)
             table_view.setRowCount(len(rows))
             table_view.setColumnCount(len(cols))
             table_view.horizontalHeader().setStretchLastSection(True)
@@ -78,10 +77,11 @@ class GUI(QWidget):
 
             table_view.resizeRowsToContents()
             table_view.resizeColumnsToContents()
+        
             self.tables.append(table_view)
             current_tab.layout.addWidget(table_view)
 
-            insert_dialog = dialogBox.Dialog()
+            insert_dialog = gui.dialogBox.Dialog()
             insert_dialog.add_fields(
                 cols,
                 query_type='I',
@@ -93,7 +93,7 @@ class GUI(QWidget):
             insert_button.clicked.connect(insert_dialog.show)
             self.insert_dialogs.append(insert_dialog)
 
-            delete_dialog = dialogBox.Dialog()
+            delete_dialog = gui.dialogBox.Dialog()
             delete_dialog.add_fields(
                 cols,
                 query_type='D',
@@ -105,7 +105,7 @@ class GUI(QWidget):
             delete_button.clicked.connect(delete_dialog.show)
             self.delete_dialogs.append(delete_dialog)
 
-            update_dialog = dialogBox.Dialog()
+            update_dialog = gui.dialogBox.Dialog()
             update_dialog.add_fields(
                 cols,
                 query_type='U',
@@ -117,7 +117,7 @@ class GUI(QWidget):
             update_button.clicked.connect(update_dialog.show)
             self.update_dialogs.append(update_dialog)
 
-            opt_dialog = dialogBox.Dialog()
+            opt_dialog = gui.dialogBox.Dialog()
             opt_dialog.add_fields(
                 [''],
                 query_type='O',

@@ -53,7 +53,7 @@ class TicketCollects:
 class TransactionBuy:
     def __init__(
             self,
-            price,transaction_datetime,
+            price, transaction_datetime,
             transaction_id,
             payment_service_provider,
             username,

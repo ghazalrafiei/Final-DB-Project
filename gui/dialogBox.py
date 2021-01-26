@@ -1,19 +1,11 @@
-# from utils import str_to_class, quote, config
+from utils import str_to_class, quote, config
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QPalette
 from PyQt5.QtCore import *
+
 import json
-import gui.darkTheme
-import gui
-import sys
-
-
-def quote(string, char='\''):
-    return char + str(string) + char
-
-
-def str_to_class(s):
-    return getattr(sys.modules['object.object'], s)
+from gui import darkTheme, mainWindow, message
+import database as dbs
 
 
 class Dialog(QDialog):
@@ -21,7 +13,14 @@ class Dialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def add_fields(self, fields, title='', query_type='', tab_name=''):
+    def add_fields(
+            self,
+            fields,
+            title='',
+            query_type='',
+            tab_name='',
+            database=dbs.DataBase(),
+            mainwindow=''):
 
         self.query_type = query_type
         self.tab_name = tab_name
@@ -29,9 +28,11 @@ class Dialog(QDialog):
         self.title = title
         self.message = ''
         self.failed = False
+        self.db = database
+        self.mainwindow = mainwindow
 
         self.setWindowTitle(title)
-        self.setPalette(gui.darkTheme.dark_palette)
+        self.setPalette(darkTheme.dark_palette)
         self.dlgLayout = QVBoxLayout()
 
         if query_type == 'D':
@@ -56,7 +57,7 @@ class Dialog(QDialog):
                 qle.setFixedSize(300, 200)
                 qle.setAlignment(Qt.AlignCenter)
             if f == 'password':
-                qle.setEchoMode(QLineEdit.PasswordEchoOnEdit)
+                qle.setEchoMode(QLineEdit.Password)
             self.text_boxes.append(qle)
             self.formLayout.addRow(f.replace('_', ' ').title(), qle)
 
@@ -87,41 +88,39 @@ class Dialog(QDialog):
             for k in inputs.keys():
                 v = inputs[k]
                 if v != '':
-                    self.message = gui.AirlineTicketSelling_db.delete(
-                        table=self.tab_name, column=k, key=v)  # inja
+                    self.message = self.db.delete(
+                        table=self.tab_name, column=k, key=v)
                     if self.message is not None:
                         self.failed = True
-                    # print('message')
-                    # show_message(message)
+          
                     break
 
         elif self.query_type == 'I':
 
             self.failed = False
-            result = gui.AirlineTicketSelling_db.insert(obj)
+            result = self.db.insert(obj)
             if self.message is not None:
                 self.failed = True
             pass
 
         elif self.query_type == 'U':
             self.failed = False
-            self.message = gui.AirlineTicketSelling_db.update(obj)  # inja
+            self.message = self.db.update(obj)  # inja
             if self.message is not None:
                 self.failed = True
             pass
 
         elif self.query_type == 'O':
             self.failed = False
-            self.message = gui.AirlineTicketSelling_db.exectue_query(inputs[0])
+            self.message = self.db.exectue_query(inputs[0])
             if self.message is not None:
                 self.failed = True
             pass
 
         self.close()
+        self.mainwindow.CreateTabs(self.db)
         if self.failed:
-            gui.show_message(self.message)
-        # refresh()
-        # window.update()
+            message.show_message(self.message)
 
     def closeEvent(self, event):
         event.accept()
