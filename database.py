@@ -4,7 +4,7 @@ import psycopg2
 
 
 class DataBase:
-    def __init__(self, dbName, user, password, host, port, schemas):
+    def __init__(self, dbName='', user='', password='', host='localhost', port=5432, schemas={}):
 
         self.dbName = dbName
         self.user = user
@@ -17,10 +17,14 @@ class DataBase:
         self.cursor = None
 
     def exectue_query(self, query):
-
+        # self.connect()
+        # if self.cursor.closed:
+            # print('closde*****************')
+        # self.connect()
+        # self.conn.a
         result = None
         try:
-            self.cursor.execute(query.replace('\"','\''))
+            self.cursor.execute(query.replace('\"', '\''))
 
             if query.startswith('SELECT'):
                 result = self.cursor.fetchall()
@@ -28,23 +32,30 @@ class DataBase:
         except Exception as err:
             err = 'Error from PostgreSQL: ' + str(err)
             stderr.write(err)
+            self.conn.rollback()
+            self.conn.close()
+            self.connect()
+            # self.connect()
+            # self.cursor
             return 1, err
 
-        finally:
+        else:
             print('log: ', self.cursor.statusmessage)
             self.conn.commit()
-
-        return 0, result
+            self.conn.close()
+            self.connect()
+            return 0, result
 
     def connect(self):
-
-        self.conn = conn = psycopg2.connect(
+        self.conn = psycopg2.connect(
             database=self.dbName,
             user=self.user,
             password=self.password,
             host=self.host,
             port=self.port)
-        self.cursor = conn.cursor()
+        print('CONNECTED')
+        self.cursor = self.conn.cursor()
+        
 
     def insert(self, obj):
 
@@ -101,9 +112,5 @@ class DataBase:
 
         select_query = f'SELECT * FROM {table}'
         err, result = self.exectue_query(select_query)
-        # if err:
-        #     return result
-        # return select_query
+
         return result
-
-

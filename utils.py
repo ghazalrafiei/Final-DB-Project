@@ -1,6 +1,6 @@
 import yaml
 import sys
-
+import object.object
 
 def quote(string, char='\''):
     return char + str(string) + char
