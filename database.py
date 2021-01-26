@@ -26,8 +26,10 @@ class DataBase:
     def exectue_query(self, query):
 
         result = None
+        query = query.replace('\"', '\'').replace('\'NULL_VALUE\'','NULL')
         try:
-            self.cursor.execute(query.replace('\"', '\''))
+            
+            self.cursor.execute(query)
 
             if query.startswith('SELECT'):
                 result = self.cursor.fetchall()
@@ -54,7 +56,6 @@ class DataBase:
             password=self.password,
             host=self.host,
             port=self.port)
-        print('CONNECTED')
         self.cursor = self.conn.cursor()
 
     def insert(self, obj):

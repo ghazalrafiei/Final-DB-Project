@@ -62,8 +62,10 @@ class Dialog(QDialog):
             self.formLayout.addRow(f.replace('_', ' ').title(), qle)
 
         self.dlgLayout.addLayout(self.formLayout)
+
         self.okay_button = QPushButton('Okay')
         self.cancel_button = QPushButton('Cancel')
+
         self.okay_button.clicked.connect(self.ok_get)
         self.cancel_button.clicked.connect(self.close)
 
@@ -77,7 +79,10 @@ class Dialog(QDialog):
     def ok_get(self):
         inputs = {}
         for i in range(len(self.text_boxes)):
-            inputs[self.fields[i]] = self.text_boxes[i].text()
+            if self.text_boxes[i].text() != '':
+                inputs[self.fields[i]] = self.text_boxes[i].text()
+            else:
+                inputs[self.fields[i]] = 'NULL_VALUE'
             self.text_boxes[i].clear()
 
         json_string = json.dumps(inputs)
@@ -98,7 +103,7 @@ class Dialog(QDialog):
         elif self.query_type == 'I':
 
             self.failed = False
-            result = self.db.insert(obj)
+            self.message = self.db.insert(obj)
             if self.message is not None:
                 self.failed = True
             pass

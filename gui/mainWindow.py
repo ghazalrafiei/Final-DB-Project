@@ -67,7 +67,7 @@ class GUI(QWidget):
             # Set Items
             for r in range(len(rows)):
                 for c in range(len(cols)):
-                    value = str(rows[r][c])
+                    value = str(rows[r][c]).replace('None','N/A')
                     if cols[c] == 'password' and value != '':
                         value = '*' * 10
                     content = QTableWidgetItem(value)

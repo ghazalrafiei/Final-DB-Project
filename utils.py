@@ -4,7 +4,9 @@ import object.object
 
 
 def quote(string, char='\''):
-    return char + str(string) + char
+    if string != '':
+        return char + str(string) + char
+    return ' '
 
 
 def str_to_class(s):
