@@ -4,14 +4,23 @@ from PyQt5.QtGui import QIcon, QPalette
 from PyQt5.QtCore import *
 
 import json
-from gui import darkTheme,mainWindow, message
+from gui import darkTheme, mainWindow, message
 import database as dbs
+
+
 class Dialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def add_fields(self, fields, title='', query_type='', tab_name='',database = dbs.DataBase(),mainwindow = '' ):
+    def add_fields(
+            self,
+            fields,
+            title='',
+            query_type='',
+            tab_name='',
+            database=dbs.DataBase(),
+            mainwindow=''):
 
         self.query_type = query_type
         self.tab_name = tab_name
@@ -83,8 +92,7 @@ class Dialog(QDialog):
                         table=self.tab_name, column=k, key=v)
                     if self.message is not None:
                         self.failed = True
-                    # print('message')
-                    # show_message(message)
+          
                     break
 
         elif self.query_type == 'I':
@@ -110,13 +118,9 @@ class Dialog(QDialog):
             pass
 
         self.close()
-        self.mainwindow.CreateTabs()
-        print('create tabs')
+        self.mainwindow.CreateTabs(self.db)
         if self.failed:
             message.show_message(self.message)
-        
 
     def closeEvent(self, event):
         event.accept()
-
-  

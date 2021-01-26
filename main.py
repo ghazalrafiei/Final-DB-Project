@@ -26,5 +26,4 @@ if __name__ == '__main__':
     graphic.show()
     sys.exit(app.exec_())
 
-    
     print('end')

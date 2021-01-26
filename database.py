@@ -4,7 +4,14 @@ import psycopg2
 
 
 class DataBase:
-    def __init__(self, dbName='', user='', password='', host='localhost', port=5432, schemas={}):
+    def __init__(
+            self,
+            dbName='',
+            user='',
+            password='',
+            host='localhost',
+            port=5432,
+            schemas={}):
 
         self.dbName = dbName
         self.user = user
@@ -17,11 +24,7 @@ class DataBase:
         self.cursor = None
 
     def exectue_query(self, query):
-        # self.connect()
-        # if self.cursor.closed:
-            # print('closde*****************')
-        # self.connect()
-        # self.conn.a
+
         result = None
         try:
             self.cursor.execute(query.replace('\"', '\''))
@@ -35,8 +38,6 @@ class DataBase:
             self.conn.rollback()
             self.conn.close()
             self.connect()
-            # self.connect()
-            # self.cursor
             return 1, err
 
         else:
@@ -55,7 +56,6 @@ class DataBase:
             port=self.port)
         print('CONNECTED')
         self.cursor = self.conn.cursor()
-        
 
     def insert(self, obj):
 

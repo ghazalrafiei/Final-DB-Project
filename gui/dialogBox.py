@@ -21,7 +21,7 @@ class Dialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def add_fields(self, fields, title='', query_type='', tab_name='' ):
+    def add_fields(self, fields, title='', query_type='', tab_name=''):
 
         self.query_type = query_type
         self.tab_name = tab_name
@@ -125,5 +125,3 @@ class Dialog(QDialog):
 
     def closeEvent(self, event):
         event.accept()
-
-  
