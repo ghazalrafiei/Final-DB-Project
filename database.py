@@ -102,8 +102,9 @@ class DataBase:
             return result
         return None
 
-    def update(self, table, column, new_value, key_column, value_column):
-        query = f'UPDATE {table} SET {column} = {quote(new_value)} WHERE {key_column} = {quote(value_column)}'
+    def update(self, table, u_column, update_to, current_value):
+        query = f'UPDATE {table} SET {u_column} = {quote(update_to)} WHERE {u_column} = {quote(current_value)}'
+        
         err, result = self.exectue_query(query)
         if err:
             return result

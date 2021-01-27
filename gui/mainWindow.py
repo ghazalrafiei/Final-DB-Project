@@ -50,15 +50,19 @@ class GUI(QWidget):
             cols = database.schemas[t]['columns']
 
             self.tabs.addTab(current_tab, t)
+            
             current_tab.layout = QVBoxLayout()
 
             table_view = QTableWidget()
-
+            table_view.setObjectName(t)
             table_view.setFixedSize(1200, 500)
             table_view.setRowCount(len(rows))
             table_view.setColumnCount(len(cols))
             table_view.horizontalHeader().setStretchLastSection(True)
             table_view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            #####################################TESTING########################
+            # table_view.current
+            #####################################TESTING########################
 
             # Set Columns Names:
             table_view.setHorizontalHeaderLabels(
@@ -71,7 +75,7 @@ class GUI(QWidget):
                     if cols[c] == 'password' and value != '':
                         value = '*' * 10
                     content = QTableWidgetItem(value)
-
+                    # content.column().
                     content.setFlags(content.flags() ^ Qt.ItemIsEditable)
                     table_view.setItem(r, c, content)
 

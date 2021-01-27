@@ -31,35 +31,51 @@ class Dialog(QDialog):
         self.db = database
         self.mainwindow = mainwindow
 
+        self.update_to = ''
+
+        self.optional = ''
+
         self.setWindowTitle(title)
         self.setPalette(darkTheme.dark_palette)
         self.dlgLayout = QVBoxLayout()
 
-        if query_type == 'D':
-            self.dlgLayout.addWidget(
-                QLabel('By any column(only one)\nIf many, deletes by the first non-empty value.'))
+        
 
-        # elif query == 'I':
-
-        #     pass
-        # elif query == 'U':
-
-        #     pass
-        elif query_type == 'O':
-            self.dlgLayout.addWidget(QLabel('Write any query you want!'))
 
         self.formLayout = QFormLayout()
         self.text_boxes = []
+        
+        #Creating Dialog Box Elements 
+        if query_type == 'O':
+            self.dlgLayout.addWidget(QLabel('Write any query you want!'))
 
-        for f in fields:
             qle = QLineEdit()
-            if query_type == 'O':
-                qle.setFixedSize(300, 200)
-                qle.setAlignment(Qt.AlignCenter)
-            if f == 'password':
-                qle.setEchoMode(QLineEdit.Password)
-            self.text_boxes.append(qle)
-            self.formLayout.addRow(f.replace('_', ' ').title(), qle)
+            qle.setFixedSize(300, 200)
+            qle.setAlignment(Qt.AlignCenter)
+            # self.text_boxes.append(qle)
+            self.optional = qle
+            self.formLayout.addRow(qle)
+            
+        
+        elif query_type == 'U':
+
+            self.dlgLayout.addWidget(QLabel('Be updated to?'))
+            qle = QLineEdit()
+            qle.setAlignment(Qt.AlignCenter)
+            self.update_to = qle
+            self.formLayout.addRow(qle)
+
+        
+        elif query_type == 'I' or query_type == 'D':   #I WILL REMOVE DELETE
+            if query_type == 'D':
+                self.dlgLayout.addWidget(QLabel('By any column(only one)\nIf many, deletes by the first non-empty value.'))
+            for f in fields:
+
+                qle = QLineEdit()
+                if f == 'password':
+                    qle.setEchoMode(QLineEdit.Password)
+                self.text_boxes.append(qle)
+                self.formLayout.addRow(f.replace('_', ' ').title(), qle)
 
         self.dlgLayout.addLayout(self.formLayout)
 
@@ -107,17 +123,29 @@ class Dialog(QDialog):
             if self.message is not None:
                 self.failed = True
             pass
-
-        elif self.query_type == 'U':
+#######################################################################################################
+        elif self.query_type == 'U': #WRITE THE QUERY
             self.failed = False
-            self.message = self.db.update(obj)  # inja
+            
+            u_column = ''
+            current_value = ''
+            for t in self.mainwindow.tables:
+                if t.objectName() == self.tab_name:
+                    current_value = t.selectedItems()[0].text()
+                    # print(u_column ,)
+                    u_column = self.db.schemas[self.tab_name]['columns'][t.currentColumn()]
+                    break
+            # print(self.update_to.text())
+            self.message = self.db.update(self.tab_name,u_column,self.update_to.text(),current_value)
+            # print
             if self.message is not None:
                 self.failed = True
             pass
-
-        elif self.query_type == 'O':
+########################################################################################################
+        elif self.query_type == 'O': #CHECK
             self.failed = False
-            self.message = self.db.exectue_query(inputs[0])
+            print(self.optional.text())
+            self.message = self.db.exectue_query(self.optional.text())
             if self.message is not None:
                 self.failed = True
             pass
