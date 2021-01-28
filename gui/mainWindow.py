@@ -44,13 +44,13 @@ class GUI(QWidget):
         self.tables = []
 
         for t in self.database.schemas.keys():
-            current_tab = QWidget()
 
             rows = database.get(t)
             cols = database.schemas[t]['columns']
 
+
+            current_tab = QWidget()
             self.tabs.addTab(current_tab, t)
-            
             current_tab.layout = QVBoxLayout()
 
             table_view = QTableWidget()
@@ -60,9 +60,6 @@ class GUI(QWidget):
             table_view.setColumnCount(len(cols))
             table_view.horizontalHeader().setStretchLastSection(True)
             table_view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-            #####################################TESTING########################
-            # table_view.current
-            #####################################TESTING########################
 
             # Set Columns Names:
             table_view.setHorizontalHeaderLabels(
@@ -71,7 +68,7 @@ class GUI(QWidget):
             # Set Items
             for r in range(len(rows)):
                 for c in range(len(cols)):
-                    value = str(rows[r][c]).replace('None','N/A')
+                    value = str(rows[r][c]).replace('None', 'N/A')
                     if cols[c] == 'password' and value != '':
                         value = '*' * 10
                     content = QTableWidgetItem(value)
@@ -81,7 +78,7 @@ class GUI(QWidget):
 
             table_view.resizeRowsToContents()
             table_view.resizeColumnsToContents()
-        
+
             self.tables.append(table_view)
             current_tab.layout.addWidget(table_view)
 

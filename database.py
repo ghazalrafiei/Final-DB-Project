@@ -26,13 +26,17 @@ class DataBase:
     def exectue_query(self, query):
 
         result = None
-        query = query.replace('\"', '\'').replace('\'NULL_VALUE\'','NULL')
+        query = query.replace('\"', '\'').replace('\'NULL_VALUE\'', 'NULL')
         try:
-            
+
             self.cursor.execute(query)
 
-            if query.startswith('SELECT'):
+            # if query.startswith('SELECT'):
+                # print(query)
+            try:
                 result = self.cursor.fetchall()
+            except Exception as err:
+                pass
 
         except Exception as err:
             err = 'Error from PostgreSQL: ' + str(err)
@@ -104,7 +108,7 @@ class DataBase:
 
     def update(self, table, u_column, update_to, current_value):
         query = f'UPDATE {table} SET {u_column} = {quote(update_to)} WHERE {u_column} = {quote(current_value)}'
-        
+
         err, result = self.exectue_query(query)
         if err:
             return result
