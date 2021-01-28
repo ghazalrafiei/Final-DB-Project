@@ -166,5 +166,5 @@ class Dialog(QDialog):
             messageBox.show_message(self.message)
             
 
-    def closeEvent(self, event):
-        event.accept()
+    # def closeEvent(self, event):
+    #     event.accept()

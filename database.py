@@ -31,10 +31,9 @@ class DataBase:
 
             self.cursor.execute(query)
 
-            # if query.startswith('SELECT'):
-                # print(query)
             try:
                 result = self.cursor.fetchall()
+
             except Exception as err:
                 pass
 
@@ -96,9 +95,7 @@ class DataBase:
             return result
         return None
 
-    def delete(self, table, column, key):  # DONE
-        # use column instead of id for all. because you might want to delete
-        # all records which have the same feature
+    def delete(self, table, column, key):
 
         query = f'DELETE FROM {table} WHERE {column} = {quote(key)}'
         err, result = self.exectue_query(query)
