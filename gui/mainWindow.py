@@ -6,7 +6,7 @@ import gui.darkTheme
 import database as db
 
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QPalette
+from PyQt5.QtGui import QIcon, QPalette, QGuiApplication
 from PyQt5.QtCore import *
 
 
@@ -17,6 +17,7 @@ class GUI(QWidget):
         self.setWindowTitle('Airline Ticket Booking Database')
         self.setFixedWidth(1250)
         self.setFixedHeight(700)
+        self.move(100,100)
         self.setPalette(gui.darkTheme.dark_palette)
         self.counter = 0
 

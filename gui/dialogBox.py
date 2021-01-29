@@ -46,10 +46,8 @@ class Dialog(QDialog):
         if query_type == 'O':
             self.dlgLayout.addWidget(QLabel('Write any query you want!'))
 
-            qle = QLineEdit()
-            qle.setFixedSize(300, 200)
-            qle.setAlignment(Qt.AlignCenter)
-            
+            qle = QTextEdit()
+            qle.setFixedSize(300, 200)            
             self.optional = qle
             self.formLayout.addRow(qle)
 
@@ -113,12 +111,13 @@ class Dialog(QDialog):
 
             current_column = ''
             current_value = ''
-            for t in self.mainwindow.tables:
-                if t.objectName() == self.tab_name:
-                    current_value = t.selectedItems()[0].text()
-                    current_column = self.db.schemas[self.tab_name]['columns'][t.currentColumn()]
-                    break
-
+            try:
+                for t in self.mainwindow.tables:
+                    if t.objectName() == self.tab_name:
+                        current_column = self.db.schemas[self.tab_name]['columns'][t.currentColumn()]
+                        break
+            except:
+                pass
             self.message = self.db.delete(self.tab_name, current_column,current_value)
 
             if self.message is not None:
@@ -134,6 +133,7 @@ class Dialog(QDialog):
         elif self.query_type == 'U':  # WRITE THE QUERY
             self.failed = False
 
+
             u_column = ''
             current_value = ''
             for t in self.mainwindow.tables:
@@ -141,6 +141,7 @@ class Dialog(QDialog):
                     current_value = t.selectedItems()[0].text()
                     u_column = self.db.schemas[self.tab_name]['columns'][t.currentColumn()]
                     break
+
             self.message = self.db.update(
                 self.tab_name,
                 u_column,
@@ -152,8 +153,7 @@ class Dialog(QDialog):
 
         elif self.query_type == 'O':
             self.failed = False
-            # print(self.optional.text())
-            err , self.message = self.db.exectue_query(self.optional.text())
+            err , self.message = self.db.exectue_query(self.optional.toPlainText())
             if err == 1:
                 self.failed = True
             pass
@@ -164,7 +164,3 @@ class Dialog(QDialog):
             messageBox.show_message(self.message, err = False)
         if self.failed:
             messageBox.show_message(self.message)
-            
-
-    # def closeEvent(self, event):
-    #     event.accept()

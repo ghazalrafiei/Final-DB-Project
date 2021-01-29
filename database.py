@@ -38,7 +38,7 @@ class DataBase:
                 pass
 
         except Exception as err:
-            err = 'Error from PostgreSQL: ' + str(err)
+            err = f'{bcolors.FAIL}Error from PostgreSQL: ' + str(err)
             stderr.write(err)
             self.conn.rollback()
             self.conn.close()
@@ -46,7 +46,7 @@ class DataBase:
             return 1, err
 
         else:
-            print('log: ', self.cursor.statusmessage)
+            print(f'{bcolors.OKBLUE}log: ', f'{bcolors.OKGREEN}{self.cursor.statusmessage}')
             self.conn.commit()
             self.conn.close()
             self.connect()

@@ -22,10 +22,6 @@ print(str_to_class('Customer')('test1', 'test1', 'test1', 22, 22, ''))
 t = ob.Customer('test1', 'test1', 'test1', 22, 22, '')
 print(t)
 
-
-# clas = str_to_class('Customer')
-# print(clas,'*********')
-
 ts_settings = config(file='config.yml')
 ts_settings.import_settings()
 
@@ -74,36 +70,33 @@ print('____________________________DELETE_______________________________')
 # ob.Customer()
 test_db.delete('Customer', 'username', 'test1')
 test_db.delete('Customer', 'username', 'test10')  # Error
-print('_______________________________GET____________________________')
+print('_____________________________GET____________________________')
 
 print(test_db.get('TicketCollects'))
 print(test_db.get('TransactionBuy'))
-print('_______________________________INSERT____________________________')
+print('____________________________INSERT____________________________')
 
 test_db.insert(ob.HostWebsite('www.web1.com'))
 test_db.insert(ob.HostWebsite('www.web2.com'))
 test_db.insert(ob.HostWebsite('www.web3.com'))
 test_db.insert(ob.HostWebsite('www.web1.com'))  # Error
-print('__________________________________UPDATE_________________________')
+print('____________________________UPDATE_________________________')
 
 test_db.update(
     'Hostwebsite',
     'website_address',
     'www.NewWeb.com',
-    'website_address',
-    'www.web1.com')
+    'website_address')
 test_db.update(
     'Hostwebsie',
     'website_address',
     'www.NewWeb.com',
-    'website_address',
-    'www.web1.com')  # Error
+    'website_address')  # Error
 test_db.update(
     'Hostwebsite',
     'website_address',
     'www.NewWeb.com',
-    'website_address',
-    'www.web8.com')  # Error
+    'website_address',)  # Error
 
 
 print('______________________________GET_____________________________')
