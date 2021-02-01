@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 
 dark_palette = QPalette()
 
-if False:
+if True:
     dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
     dark_palette.setColor(QPalette.WindowText, Qt.white)
     dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
