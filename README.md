@@ -1,4 +1,4 @@
-# Final Database Course Project - Winter 2020
+# Final Database Course Project - Fall 2020
 
 A program for managing database and doing crud operations on different tables.
 
