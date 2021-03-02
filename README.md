@@ -1,6 +1,6 @@
 # Final Database Course Project - Fall 2020
 
-A program for managing database and doing crud operations on different tables.
+An application to manage a database and do CRUD operations on its different tables.
 
 The schema is derieved from first exercise which was to create ER model for an online airline ticket booking website and it is available in folder sql which also has queries for creating tables and inserting some records in it.
 
