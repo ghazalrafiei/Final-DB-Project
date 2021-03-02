@@ -1,1 +1,1 @@
-Queries used in creating and inserting tables with PostgreSQL command line.
+Queries used in creating and inserting tables with PostgreSQL command line interface.
