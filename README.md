@@ -12,4 +12,4 @@ Inserting is obvious but for deleting and updating, at first you must select a r
 Optional box is embedded for you to see anything from the tables you want and you will see the results in an informative dialog box.
 
 <h2>More</h2>
-You can switch between dark and light them only by changing `if True` to `False` in the beginning of `gui/darkTheme.p`.
+You can switch between dark and light them only by changing ```if True``` to ```False``` in the beginning of ```gui/darkTheme.p```.
