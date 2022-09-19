@@ -12,7 +12,7 @@ Inserting is obvious but for deleting and updating, at first you must select a r
 Optional box is embedded for you to see anything from the tables you want and you will see the results in an informative dialog box.
 
 ## Preview 
-![]("Sample/Screenshot from 2021-01-29 22-05-08.png" "Preview 1")
+![]("/Sample/Screenshot from 2021-01-29 22-05-08.png" "Preview 1")
 
 ## More
 You can switch between dark and light them only by changing `if True` to `False` in the beginning of `gui/darkTheme.py`.
