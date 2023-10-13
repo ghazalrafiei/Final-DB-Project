@@ -14,19 +14,19 @@ Optional box is embedded for you to see anything from the tables you want and yo
 Here you can see a sample of each window and different operations:
 
 <p align="center">
-<img src="./screenshots/1.png" width="400">
-<img src="./screenshots/2.png" width="400">
-<img src="./screenshots/3.png" width="400">
-<img src="./screenshots/4.png" width="400">
-<img src="./screenshots/5.png" width="400">
-<img src="./screenshots/6.png" width="400">
-<img src="./screenshots/7.png" width="400">
-<img src="./screenshots/8.png" width="400">
-<img src="./screenshots/9.png" width="400">
-<img src="./screenshots/10.png" width="400">
-<img src="./screenshots/11.png" width="400">
-<img src="./screenshots/12.png" width="400">
-<img src="./screenshots/13.png" width="400">
+<img src="./screenshots/1.png">
+<img src="./screenshots/2.png">
+<img src="./screenshots/3.png">
+<img src="./screenshots/4.png">
+<img src="./screenshots/5.png">
+<img src="./screenshots/6.png">
+<img src="./screenshots/7.png">
+<img src="./screenshots/8.png">
+<img src="./screenshots/9.png">
+<img src="./screenshots/10.png">
+<img src="./screenshots/11.png">
+<img src="./screenshots/12.png">
+<img src="./screenshots/13.png">
 
 
 
